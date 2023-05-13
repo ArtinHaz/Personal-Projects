@@ -1,0 +1,78 @@
+import pygame
+import math
+import time
+
+pygame.init()
+
+# Set the dimensions of the window
+window_size = (400, 400)
+
+# Define colors
+black = (222, 255, 255)
+white = (25, 55, 55)
+
+# Set up the clock
+clock = pygame.time.Clock()
+
+# Set up the font
+font = pygame.font.SysFont(None, 24)
+
+# Set up the window
+window = pygame.display.set_mode(window_size)
+pygame.display.set_caption("Analog Clock")
+
+# Main game loop
+while True:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+
+    # Clear the screen
+    window.fill(white)
+
+    # Draw the clock face
+    pygame.draw.circle(window, black, (200, 200), 100, 2)
+
+    # Draw the hour markers
+    for i in range(12):
+        angle = i * (math.pi / 6)
+        x = 200 + math.sin(angle) * 90
+        y = 200 - math.cos(angle) * 90
+        pygame.draw.circle(window, black, (int(x), int(y)), 5)
+
+    # Get the current time
+    current_time = time.localtime()
+    hours = current_time.tm_hour % 12
+    minutes = current_time.tm_min
+    seconds = current_time.tm_sec
+
+    # Draw the hour hand
+    hour_angle = (hours + minutes / 60) * (math.pi / 6)
+    hour_x = 200 + math.sin(hour_angle) * 50
+    hour_y = 200 - math.cos(hour_angle) * 50
+    pygame.draw.line(window, black, (200, 200), (hour_x, hour_y), 4)
+
+    # Draw the minute hand
+    minute_angle = minutes * (math.pi / 30)
+    minute_x = 200 + math.sin(minute_angle) * 70
+    minute_y = 200 - math.cos(minute_angle) * 70
+    pygame.draw.line(window, black, (200, 200), (minute_x, minute_y), 2)
+
+    # Draw the second hand
+    second_angle = seconds * (math.pi / 30)
+    second_x = 200 + math.sin(second_angle) * 80
+    second_y = 200 - math.cos(second_angle) * 80
+    pygame.draw.line(window, black, (200, 200), (second_x, second_y), 1)
+
+    # Draw the digital time
+    time_str = time.strftime("%I:%M:%S %p", current_time)
+    text = font.render(time_str, True, black)
+    window.blit(text, (150, 10))
+
+    # Update the display
+    pygame.display.update()
+
+    # Set the frame rate
+    clock.tick(60)
