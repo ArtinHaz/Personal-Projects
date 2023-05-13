@@ -1,0 +1,21 @@
+import smtplib
+from email.mime.text import MIMEText
+
+# Set up the SMTP server
+server = smtplib.SMTP('smtp.gmail.com', 587)
+server.starttls()
+server.login('artin.hamzehpour@gmail.com', '--------!')
+
+# Set up the email message
+subject = "Test Email"
+body = "This is a test email."
+msg = MIMEText(body)
+msg['Subject'] = subject
+msg['From'] = '---------'
+msg['To'] = '---------'
+
+# Send the email
+server.sendmail('artin.hamzehpour@gmail.com', 'recipient email', msg.as_string())
+
+# Disconnect from the server
+server.quit()
