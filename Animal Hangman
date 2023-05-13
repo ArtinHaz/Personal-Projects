@@ -1,0 +1,55 @@
+import random
+
+def get_word():
+    words = ['Monkey', 'Lion', 'Giraffe', 'Tiger', 'Elephant', 'Penguin']
+    return random.choice(words)
+
+def play_game():
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    word = get_word()
+    letters_guessed = []
+    tries = 6
+
+    while tries > 0:
+        print('\n')
+        for letter in word:
+            if letter in letters_guessed:
+                print(letter, end=' ')
+            else:
+                print('_', end=' ')
+
+        print('\n')
+        guess = input("Guess a letter: ").lower()
+
+        if guess == 'quit':
+            print("Thanks for playing!")
+            return
+
+        if guess not in alphabet:
+            print("Enter a valid letter.")
+        elif guess in letters_guessed:
+            print("You have already guessed that letter. Try again.")
+        elif guess not in word:
+            print("Sorry, that letter is not in the word.")
+            tries -= 1
+            print(f"You have {tries} tries left.")
+            letters_guessed.append(guess)
+        else:
+            print("Great guess! That letter is in the word.")
+            letters_guessed.append(guess)
+
+        if set(letters_guessed) == set(word):
+            print("\nCongratulations! You guessed the word.")
+            print(f"The word was '{word}'.")
+            break
+
+    if tries == 0:
+        print("\nGame over. You ran out of tries.")
+        print(f"The word was '{word}'.")
+
+while True:
+    play_game()
+    play_again = input("Would you like to play again? (y/n): ").lower()
+    if play_again != 'y':
+        print("Thanks for playing!")
+        break
