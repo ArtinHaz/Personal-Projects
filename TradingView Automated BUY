@@ -1,0 +1,29 @@
+import alpaca_trade_api as tradeapi
+
+BASE_URL = "https://paper-api.alpaca.markets"
+API_KEY = "------------"
+SECRET_KEY = "------------"
+
+
+def trade_stock(request):
+    data = request.get_json()
+
+    api = tradeapi.REST(API_KEY, SECRET_KEY, BASE_URL)
+
+    api.submit_order(
+        symbol=data['ticker'],
+        qty=2,
+        side='buy',
+        type='market',
+        time_in_force='gtc',
+        order_class='bracket',
+        stop_loss={'stop_price': round(data['close'] * 0.97, 2),
+                   'limit_price': round(data['close'] * 0.95, 2)},
+        take_profit={'limit_price': round(data['close'] * 1.05, 2)}
+    )
+
+    return {
+        "code": "success"
+
+    }
+
